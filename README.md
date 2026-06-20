@@ -446,11 +446,6 @@ EventBoard/
 ├── interrupts_defines.h
 ├── types.h
 │
-├── mini_project.pdsprj
-│
-├── images/
-│   └── block_diagram.png
-│
 └── README.md
 ```
 
