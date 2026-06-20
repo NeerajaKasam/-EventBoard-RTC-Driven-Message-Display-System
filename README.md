@@ -90,9 +90,7 @@ This project demonstrates the integration of RTC, LCD, Keypad, ADC, External Int
 
 ## Block Diagram
 
-<p align="center">
-  <img src="images/block_diagram.png" alt="Event Board Block Diagram" width="750">
-</p>
+<img width="750" height="450" alt="image" src="https://github.com/user-attachments/assets/035d7339-4bf2-41d6-98e6-11c13f15ebf0" />
 
 ### Block Description
 
@@ -502,29 +500,5 @@ This project provided practical experience in:
 - Wi-Fi-Based Configuration
 - Mobile Application Control
 - Cloud Event Scheduling
-
----
-
-## Author
-
-### Gopal Raosaheb Tade
-
-**BE Electronics & Telecommunication Engineering**
-
-Embedded Systems Engineer
-
-#### Skills
-
-- Embedded C
-- LPC2148 ARM7
-- RTC
-- LCD
-- Keypad
-- ADC
-- UART
-- SPI
-- I2C
-- CAN
-- Embedded Linux
 
 ---
