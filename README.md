@@ -1,479 +1,530 @@
 # Event Board – RTC Driven Message Display System
 
-
-
 ## Overview
 
+Event Board is a real-time embedded scheduling and information display system built using the LPC2148 ARM7 microcontroller. The project functions as an intelligent digital notice board capable of automatically displaying predefined event messages at specific times using the on-chip Real-Time Clock (RTC).
 
+Unlike conventional notice boards that require manual updates, this system continuously monitors the current time and displays scheduled announcements automatically. To ensure complete visibility of lengthy messages on a 16x2 LCD, a scrolling display mechanism has been implemented.
 
-Event Board is a real-time embedded application developed on the LPC2148 ARM7 microcontroller. The system automatically displays predefined event messages on a 16x2 LCD at scheduled times using the on-chip Real-Time Clock (RTC). To improve visibility on a limited display, messages are presented using a scrolling mechanism.
+The project also incorporates environmental monitoring through an LM35 temperature sensor connected to the LPC2148 ADC module. During non-event periods, the system displays the current date, time, and room temperature, making efficient use of the display.
 
+For secure operation, an Admin Mode is provided through an external interrupt-based switch and password authentication using a 4x4 matrix keypad. Authorized users can modify RTC settings and enable or disable events without reprogramming the microcontroller.
 
-
-The project also integrates an LM35 temperature sensor for continuous room temperature monitoring through the LPC2148 ADC module. During idle periods, the system displays the current date, time, and temperature on the LCD.
-
-
-
-A dedicated Admin Mode is implemented using an external interrupt-based switch and password authentication through a 4x4 Matrix Keypad. Authorized users can modify RTC settings and manage event schedules without reprogramming the controller. Status LEDs provide visual indication of the current operating mode.
-
-
-
-This project demonstrates the practical implementation of RTC, LCD, Keypad (KPM), ADC, GPIO, External Interrupts, and Sensor Interfacing in a single embedded application.
-
-
+This project demonstrates the integration of RTC, LCD, Keypad, ADC, External Interrupts, GPIO, Sensor Interfacing, and Menu-Driven Embedded Software Design in a single real-time embedded application.
 
 ---
 
+## Objectives
 
+- Automate event announcements using RTC-based scheduling.
+- Display predefined messages at user-defined times.
+- Implement a scrolling mechanism for long LCD messages.
+- Monitor room temperature using an LM35 sensor.
+- Provide secure password-protected administrative access.
+- Allow runtime modification of RTC settings.
+- Enable or disable scheduled messages dynamically.
+- Demonstrate real-time embedded system design using LPC2148.
+
+---
 
 ## Key Features
 
+### Real-Time Event Scheduling
+- Automatic event triggering using LPC2148 RTC.
+- Scheduled message display without user intervention.
+- Real-time date and time management.
 
+### Intelligent LCD Display
+- Event messages displayed automatically.
+- Scrolling support for long messages.
+- Time, date, and temperature display during idle mode.
 
-✔ RTC-based automatic event scheduling
+### Secure Admin Mode
+- Password-based authentication.
+- External interrupt triggered access.
+- Runtime system configuration.
 
+### Event Management
+- Enable individual events.
+- Disable unwanted events.
+- Select active schedules for the day.
 
+### Temperature Monitoring
+- LM35 sensor integration.
+- ADC-based temperature acquisition.
+- Continuous environmental monitoring.
 
-✔ Scrolling message display on 16x2 LCD
-
-
-
-✔ Real-time date and time display
-
-
-
-✔ Room temperature monitoring using LM35
-
-
-
-✔ ADC-based sensor data acquisition
-
-
-
-✔ Password-protected Admin Mode
-
-
-
-✔ External Interrupt-based Admin access
-
-
-
-✔ Event Enable/Disable functionality
-
-
-
-✔ RTC Date and Time Editing
-
-
-
-✔ Green LED and Red LED status indication
-
-
-
-✔ Menu-driven user interface using 4x4 Keypad
-
-
+### Status Indicators
+- Green LED indicates active event display.
+- Red LED indicates normal monitoring mode.
+- Buzzer support for notifications.
 
 ---
 
+## Hardware Components
 
-
-## Hardware Used
-
-
-
-| Component         | Purpose                 |
-
-| ----------------- | ----------------------- |
-
-| LPC2148           | Main Controller         |
-
-| RTC (On-Chip)     | Real-Time Scheduling    |
-
-| 16x2 LCD          | Information Display     |
-
-| 4x4 Matrix Keypad | User Input              |
-
-| LM35              | Temperature Sensing     |
-
-| ADC               | Temperature Conversion  |
-
-| External Switch   | Admin Mode Entry        |
-
-| Green LED         | Active Event Indication |
-
-| Red LED           | Normal Monitoring Mode  |
-
-| Buzzer            | User Notification       |
-
-
+| Component | Function |
+|------------|------------|
+| LPC2148 | Main Controller |
+| RTC (Internal) | Time Management |
+| 16x2 LCD | Message Display |
+| 4x4 Matrix Keypad | User Input |
+| LM35 Sensor | Temperature Measurement |
+| ADC | Analog to Digital Conversion |
+| External Switch | Admin Mode Entry |
+| Green LED | Event Status Indicator |
+| Red LED | Idle Status Indicator |
+| Buzzer | Notification Device |
+| Power Supply | System Power |
 
 ---
-
-
 
 ## Software Tools
 
-
-
-* Embedded C
-
-* Keil µVision
-
-* Flash Magic
-
-
+- Embedded C
+- Keil µVision
+- Flash Magic
+- Proteus Design Suite
 
 ---
 
+## Block Diagram
 
+<p align="center">
+  <img src="images/block_diagram.png" alt="Event Board Block Diagram" width="750">
+</p>
 
-## Peripheral Interfaces Implemented
+### Block Description
 
+The LPC2148 acts as the central controller of the system.
 
+The RTC module maintains accurate date and time information used for event scheduling. The keypad and admin switch allow user interaction and secure access to configuration menus. The LCD displays system information and scheduled messages. The LM35 sensor provides room temperature data through the ADC module. Green and Red LEDs indicate the current operating mode of the system.
+
+---
+
+## Peripheral Interfaces Used
 
 ### RTC Interfacing
 
+The LPC2148 contains an internal Real-Time Clock responsible for maintaining:
 
+- Hours
+- Minutes
+- Seconds
+- Day
+- Date
+- Month
+- Year
 
-The LPC2148 on-chip Real-Time Clock maintains the current date and time. Event messages are triggered automatically when the RTC time matches a scheduled event.
+The RTC continuously runs in the background and acts as the primary scheduler for event announcements.
 
-
+---
 
 ### LCD Interfacing
 
+A 16x2 alphanumeric LCD is used to display:
 
+- Current Time
+- Current Date
+- Room Temperature
+- Event Messages
+- Password Prompts
+- Configuration Menus
+- Status Information
 
-A 16x2 LCD is used to display:
+Since many event messages exceed 16 characters, a scrolling mechanism is implemented to display complete information.
 
+---
 
+### Keypad Interfacing
 
-* Date and Time
+A 4x4 Matrix Keypad provides user interaction.
 
-* Room Temperature
+Functions include:
 
-* Event Messages
+- Password Entry
+- Menu Navigation
+- RTC Editing
+- Event Selection
+- Event Activation
+- Event Deactivation
 
-* Admin Menus
-
-* User Prompts
-
-
-
-Long messages are displayed using a scrolling mechanism to overcome LCD size limitations.
-
-
-
-### Keypad (KPM) Interfacing
-
-
-
-A 4x4 Matrix Keypad is used for:
-
-
-
-* Password Entry
-
-* RTC Configuration
-
-* Event Selection
-
-* Menu Navigation
-
-
+---
 
 ### ADC Interfacing
 
+The LPC2148 ADC module converts analog signals from the LM35 sensor into digital values.
 
+ADC is used for:
 
-The LPC2148 ADC module converts the analog voltage generated by the LM35 sensor into digital values for temperature calculation.
+- Temperature Monitoring
+- Sensor Data Acquisition
+- Environmental Monitoring
 
+---
 
+### LM35 Sensor Interfacing
 
-### LM35 Interfacing
+The LM35 sensor provides an analog output proportional to temperature.
 
+Characteristics:
 
+- Linear output
+- 10mV per °C
+- No calibration required
+- Direct ADC compatibility
 
-The LM35 temperature sensor provides an analog output proportional to temperature (10mV/°C). The ADC reads this voltage and converts it into temperature values displayed on the LCD.
+Temperature values are processed and displayed on the LCD.
 
-
+---
 
 ### External Interrupt Interfacing
 
+An external switch is connected to an interrupt pin.
 
+When pressed:
 
-An external switch is connected to an interrupt pin. When pressed, the controller immediately enters Admin Mode without affecting the ongoing system operation.
+- Interrupt is generated.
+- Normal operation pauses temporarily.
+- Admin Mode is activated immediately.
 
+This allows instant access to system settings.
 
+---
 
 ### GPIO Interfacing
 
-
-
 GPIO pins are used for:
 
-
-
-* LCD Communication
-
-* Keypad Scanning
-
-* LED Control
-
-* Switch Detection
-
-
+- LCD Communication
+- Keypad Scanning
+- LED Control
+- Buzzer Control
+- Switch Monitoring
 
 ---
 
+## System Operation
 
+### 1. System Startup
 
-## System Working
+After power-on, the LPC2148 initializes:
 
+- RTC
+- LCD
+- ADC
+- GPIO
+- Keypad
+- External Interrupt
+- LEDs
+- Buzzer
 
+All event schedules are loaded into memory.
 
-### Normal Mode
+---
 
-
-
-After power-up, the LPC2148 initializes all peripherals including RTC, LCD, ADC, LM35, LEDs, and Keypad.
-
-
+### 2. Normal Monitoring Mode
 
 The system continuously:
 
-
-
-* Reads current RTC time
-
-* Reads room temperature from LM35
-
-* Displays date, time, and temperature
-
-* Checks for scheduled events
-
-
+- Reads RTC Time
+- Reads RTC Date
+- Reads Temperature
+- Displays Information
+- Checks Scheduled Events
 
 Example LCD Display:
 
-
-
+```text
 Time : 09:45:20
 
-
-
 Temp : 28°C
+```
 
+During this state:
 
-
-The Red LED remains ON indicating normal monitoring mode.
-
-
+- Red LED = ON
+- Green LED = OFF
 
 ---
 
+### 3. Event Display Mode
 
+Whenever the current RTC time matches a scheduled event:
 
-### Event Display Mode
+- Corresponding event is selected.
+- LCD scrolling starts.
+- Event message is displayed.
+- Green LED turns ON.
 
+Example Event:
 
+```text
+ARM Workshop on External Interrupts
+in LAB1 at 10 AM
+```
 
-Whenever the RTC time matches an enabled event schedule:
+During this state:
 
+- Green LED = ON
+- Red LED = OFF
 
+---
 
-* Corresponding message is fetched
+## Admin Mode
 
-* Message scrolls across LCD
+Admin Mode is activated using an external interrupt switch.
 
-* Green LED turns ON
+### Authentication Process
 
-* Event information is displayed
-
-
+User must enter a valid password.
 
 Example:
 
+```text
+Enter Password
+****
+```
 
+If correct:
 
-"ARM Workshop on External Interrupts in Lab-1 at 10 AM"
+```text
+Access Granted
+```
 
+If incorrect:
 
+```text
+Access Denied
+```
 
-The scrolling mechanism allows long messages to be displayed smoothly on the 16x2 LCD.
-
-
-
----
-
-
-
-### Admin Mode
-
-
-
-Admin Mode is activated through an External Interrupt switch.
-
-
-
-The user is prompted to enter a password using the keypad.
-
-
-
-After successful authentication, the following options are available:
-
-
-
-#### RTC Configuration
-
-
-
-* Edit Hour
-
-* Edit Minute
-
-* Edit Second
-
-* Edit Date
-
-* Edit Day
-
-* Edit Month
-
-* Edit Year
-
-
-
-#### Event Configuration
-
-
-
-* Select Event Number
-
-* Activate Event
-
-* Deactivate Event
-
-* Exit Menu
-
-
-
-This provides complete control over the event scheduling system without modifying the program.
-
-
+Only authenticated users can access system settings.
 
 ---
 
+## RTC Configuration Menu
 
+Authorized users can modify:
+
+- Hour
+- Minute
+- Second
+- Date
+- Day
+- Month
+- Year
+
+Example:
+
+```text
+Current Time : 09:20
+
+New Time : 09:30
+```
+
+The updated values are written directly into RTC registers.
+
+---
+
+## Event Configuration Menu
+
+The administrator can:
+
+- Select Event Number
+- Enable Event
+- Disable Event
+- Exit Configuration
+
+This provides flexibility without changing source code.
+
+---
+
+## Event Data Structure
+
+```c
+#define TOTAL_MESSAGES 10
+
+typedef struct
+{
+    unsigned char hour;
+    unsigned char minute;
+    char text[80];
+    unsigned char enabled;
+} Message;
+```
+
+### Structure Members
+
+| Field | Description |
+|----------|------------|
+| hour | Event Hour |
+| minute | Event Minute |
+| text | Event Message |
+| enabled | Event Status Flag |
+
+---
+
+## Default Event Schedule
+
+```c
+{7,45,"Good Morning! Classes Start Soon",1}
+
+{13,45,"C Programming Session in Classroom Number 2",1}
+
+{10,15,"C Module Theory Exam in 4th Floor Lab1",1}
+
+{10,15,"C Module Lab Exam in Lab2 and Middle Lab at 10:30AM",1}
+
+{12,45,"Lunch Break from 1PM to 2PM",1}
+
+{9,45,"ARM Workshop on External Interrupts in LAB1 at 10AM",1}
+
+{9,45,"ARM Kit Issue Time from 10AM to 10:30AM",1}
+
+{15,15,"Only 15 Minutes Break Time for Next ARM Session",1}
+
+{17,00,"Revise Today's Class Programs at Home",1}
+
+{17,45,"End of Day - See You Tomorrow",1}
+```
+
+Initially all events are enabled.
+
+---
 
 ## Project Flow
 
-
-
-1. Initialize RTC, LCD, ADC, GPIO and Keypad.
-
+1. Initialize all peripherals.
 2. Read current RTC date and time.
-
-3. Read temperature from LM35 through ADC.
-
-4. Display current information on LCD.
-
-5. Compare RTC time with stored event schedules.
-
-6. If match occurs:
-
-
-
-   * Display scrolling event message.
-
-   * Turn ON Green LED.
-
-7. Otherwise:
-
-
-
-   * Display Clock and Temperature.
-
-   * Turn ON Red LED.
-
-8. Monitor External Interrupt switch.
-
-9. Enter Admin Mode when interrupt occurs.
-
-10. Allow RTC and Event Configuration.
-
-11. Return to Normal Mode.
-
-
+3. Acquire temperature from LM35.
+4. Display system information.
+5. Compare RTC time with event schedules.
+6. Check whether event is enabled.
+7. Display scrolling event message if match occurs.
+8. Turn ON Green LED during event display.
+9. Display clock and temperature otherwise.
+10. Turn ON Red LED during idle mode.
+11. Monitor external interrupt switch.
+12. Enter Admin Mode when interrupt occurs.
+13. Authenticate user.
+14. Allow RTC and event configuration.
+15. Return to Normal Mode.
 
 ---
 
+## Project Directory Structure
 
+```text
+EventBoard/
+│
+├── Event_Board_Main.c
+│
+├── rtc.c
+├── rtc.h
+├── rtc_defines.h
+│
+├── lcd.c
+├── lcd.h
+├── lcd_defines.h
+│
+├── adc.c
+├── adc.h
+├── adc_defines.h
+│
+├── kpm.c
+├── kpm.h
+├── kpm_defines.h
+│
+├── settings.c
+├── settings.h
+│
+├── delay.c
+├── delay.h
+│
+├── pin_connect_block.c
+├── pin_connect_block.h
+│
+├── defines.h
+├── interrupts_defines.h
+├── types.h
+│
+├── mini_project.pdsprj
+│
+├── images/
+│   └── block_diagram.png
+│
+└── README.md
+```
+
+---
 
 ## Learning Outcomes
 
+This project provided practical experience in:
 
-
-Through this project, I gained hands-on experience in:
-
-
-
-* Embedded C Programming
-
-* LPC2148 ARM7 Architecture
-
-* RTC Programming
-
-* LCD Interfacing
-
-* Keypad Scanning Techniques
-
-* ADC Programming
-
-* LM35 Sensor Interfacing
-
-* External Interrupt Handling
-
-* GPIO Programming
-
-* Menu Driven Embedded Applications
-
-* Real-Time Embedded System Design
-
-
+- Embedded C Programming
+- LPC2148 ARM7 Architecture
+- RTC Programming
+- LCD Interfacing
+- Matrix Keypad Scanning
+- ADC Programming
+- Sensor Interfacing
+- LM35 Temperature Monitoring
+- GPIO Programming
+- External Interrupt Handling
+- Real-Time Embedded Systems
+- Event Scheduling Techniques
+- Menu-Driven Application Development
+- Modular Firmware Design
 
 ---
-
-
 
 ## Applications
 
-
-
-* Digital Notice Boards
-
-* Classroom Announcement Systems
-
-* Event Reminder Systems
-
-* Office Information Displays
-
-* Industrial Information Panels
-
-* Smart Scheduling Systems
-
-
+- Digital Notice Boards
+- Educational Institutions
+- Classroom Announcement Systems
+- Training Centers
+- Office Information Displays
+- Industrial Information Panels
+- Event Reminder Systems
+- Smart Scheduling Applications
 
 ---
 
+## Future Enhancements
 
+- EEPROM-Based Event Storage
+- UART-Based Event Updates
+- Bluetooth Connectivity
+- GSM Notification Support
+- IoT Dashboard Integration
+- Wi-Fi-Based Configuration
+- Mobile Application Control
+- Cloud Event Scheduling
+
+---
 
 ## Author
 
+### Gopal Raosaheb Tade
 
+**BE Electronics & Telecommunication Engineering**
 
-### Neeraja Kasam
+Embedded Systems Engineer
 
+#### Skills
 
+- Embedded C
+- LPC2148 ARM7
+- RTC
+- LCD
+- Keypad
+- ADC
+- UART
+- SPI
+- I2C
+- CAN
+- Embedded Linux
 
-Embedded Systems | LPC2148 | Embedded C | RTC | LCD | KPM | ADC | LM35 | External Interrupts
+---
