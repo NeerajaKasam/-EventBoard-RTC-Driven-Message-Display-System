@@ -415,7 +415,7 @@ Initially all events are enabled.
 ```text
 EventBoard/
 │
-├── Event_Board_Main.c
+├── main.c
 │
 ├── rtc.c
 ├── rtc.h
@@ -433,8 +433,8 @@ EventBoard/
 ├── kpm.h
 ├── kpm_defines.h
 │
-├── settings.c
-├── settings.h
+├── admin.c
+├── admin.h
 │
 ├── delay.c
 ├── delay.h
